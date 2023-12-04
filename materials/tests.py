@@ -19,4 +19,5 @@ class MaterialsModelTest(TestCase):
         self.assertEqual(material.material_name, 'TestMaterial')
         self.assertEqual(material.material_color, 'TestColor')
         self.assertEqual(material.material_unit, 'TestUnit')
-        self.assertIsNotNone(material.material_date)
+        self.assertIsNotNone(material.created_at)
+        self.assertIsNotNone(material.updated_at)
