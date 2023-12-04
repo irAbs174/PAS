@@ -17,4 +17,5 @@ class RatesModelTest(TestCase):
         self.assertEqual(rate.rate_author, 'TestAuthor')
         self.assertAlmostEqual(rate.rate_value, 100.5)
         self.assertEqual(rate.rate_unit, 'TestUnit')
-        self.assertIsNotNone(rate.rate_date)
+        self.assertIsNotNone(rate.created_at)
+        self.assertIsNotNone(rate.updated_at)
