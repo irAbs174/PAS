@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "home",
     "materials",
     "rates",
+    "units",
 ]
 
 MIDDLEWARE = [
