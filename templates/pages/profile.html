@@ -2,74 +2,135 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Handsontable with Selectable Lists and Delete Rows</title>
-  <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
+  <title>Table with Selectable Lists and Delete Rows</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    input, select {
+      width: 100%;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 8px 12px;
+      background-color: #4285f4;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3c79e6;
+    }
+  </style>
 </head>
 <body>
-  <div id="materials-table"></div>
-  <button id="add-row-btn">Add Row</button>
-  <button id="delete-row-btn">Delete Selected Row(s)</button>
-  <button id="save-btn">Save</button>
+  <table id="materials-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Symbol</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Unit</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="text" class="name"></td>
+        <td><input type="text" class="symbol"></td>
+        <td><input type="text" class="description"></td>
+        <td><input type="number" class="quantity" value="0"></td>
+        <td><input type="number" class="price" value="0"></td>
+        <td>
+          <select class="unit">
+            <option value="Unit1">Unit1</option>
+            <option value="Unit2">Unit2</option>
+            <option value="Unit3">Unit3</option>
+          </select>
+        </td>
+        <td><button onclick="deleteRow(this)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <button onclick="addRow()">Add Row</button>
+  <button onclick="saveData()">Save</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const container = document.getElementById('materials-table');
-      const addRowBtn = document.getElementById('add-row-btn');
-      const deleteRowBtn = document.getElementById('delete-row-btn');
-      const saveBtn = document.getElementById('save-btn');
+    function addRow() {
+      const table = document.getElementById('materials-table').getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow(table.rows.length);
+      const columns = ['name', 'symbol', 'description', 'quantity', 'price', 'unit', 'action'];
 
-      const data = [
-        { name: '', symbol: '', description: '', quantity: 0, price: 0, unit: '' }
-      ];
-
-      const units = ['Unit1', 'Unit2', 'Unit3']; // Replace with your list of units from Django
-
-      const hot = new Handsontable(container, {
-        data: data,
-        rowHeaders: true,
-        colHeaders: ['Name', 'Symbol', 'Description', 'Quantity', 'Price', 'Unit'],
-        columns: [
-          { data: 'name' },
-          { data: 'symbol' },
-          { data: 'description' },
-          { data: 'quantity', type: 'numeric' },
-          { data: 'price', type: 'numeric' },
-          {
-            data: 'unit',
-            type: 'dropdown', // Use 'dropdown' type for selectable lists
-            source: units // Set the source as your list of units
-          }
-        ],
-        minSpareRows: 1,
-        stretchH: 'all',
-        validator: function(value, callback) {
-          // Add custom validation logic if needed
-          callback(true);
-        }
-      });
-
-      addRowBtn.addEventListener('click', function() {
-        hot.alter('insert_row');
-      });
-
-      deleteRowBtn.addEventListener('click', function() {
-        const selectedRows = hot.getSelected();
-        if (selectedRows) {
-          selectedRows.sort((a, b) => b - a); // Sort in reverse order to prevent index changes
-          selectedRows.forEach(([startRow, , endRow]) => {
-            hot.alter('remove_row', startRow, endRow);
+      columns.forEach((col, index) => {
+        const cell = newRow.insertCell(index);
+        if (col === 'unit') {
+          const select = document.createElement('select');
+          select.classList.add('unit');
+          const units = ['Unit1', 'Unit2', 'Unit3']; // Replace with your list of units from Django
+          units.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit;
+            option.text = unit;
+            select.appendChild(option);
           });
+          cell.appendChild(select);
+        } else if (col === 'action') {
+          const button = document.createElement('button');
+          button.textContent = 'Delete';
+          button.onclick = function() {
+            deleteRow(this);
+          };
+          cell.appendChild(button);
+        } else {
+          const input = document.createElement('input');
+          input.type = col === 'quantity' || col === 'price' ? 'number' : 'text';
+          input.classList.add(col);
+          input.value = col === 'quantity' || col === 'price' ? 0 : '';
+          cell.appendChild(input);
         }
       });
+    }
 
-      saveBtn.addEventListener('click', function() {
-        const allData = hot.getData();
-        // Process the collected data (e.g., send it to the server)
-        console.log(allData);
-        // Add logic to handle the data (e.g., sending it to a server, etc.)
-      });
-    });
+    function deleteRow(btn) {
+      const row = btn.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    }
+
+    function saveData() {
+      const table = document.getElementById('materials-table');
+      const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+      const data = [];
+
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        const rowData = {};
+        for (let j = 0; j < cells.length - 1; j++) {
+          const cell = cells[j].querySelector('input, select');
+          rowData[cell.classList[0]] = cell.value;
+        }
+        data.push(rowData);
+      }
+
+      console.log(data);
+      // Add logic to handle the data (e.g., sending it to a server, etc.)
+    }
   </script>
 </body>
 </html>
