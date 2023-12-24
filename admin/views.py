@@ -19,9 +19,6 @@ def tables(request):
 def vr(request):
   return render(request, 'pages/virtual-reality.html', { 'segment': 'vr' })
 
-def rtl(request):
-  return render(request, 'pages/rtl.html', { 'segment': 'rtl' })
-
 def profile(request):
   return render(request, 'pages/profile.html', { 'segment': 'profile' })
 

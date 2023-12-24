@@ -1,6 +1,6 @@
-from django.urls import path
-from admin_soft import views
 from django.contrib.auth import views as auth_views
+from django.urls import path, include
+from admin_soft import views
 
 
 urlpatterns = [
@@ -8,7 +8,7 @@ urlpatterns = [
     path('billing/', views.billing, name='billing'),
     path('tables/', views.tables, name='tables'),
     path('vr/', views.vr, name='vr'),
-    path('products/', views.rtl, name='rtl'),
+    path('analys/', include('analys.urls'), name='analys.urls'),
     path('profile/', views.profile, name='profile'),
 
     # Authentication
