@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "materials",
     "rates",
     "units",
+    "analys",
 ]
 
 MIDDLEWARE = [
