@@ -3,40 +3,13 @@
 
   {% block title %}تحلیل جدید{% endblock %}
   {% block stylesheets %}
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="{% static 'css/analys/new.css' %}">
   {% endblock stylesheets %} 
   {% block content %}
-  <table id="materials-table">
-    <thead>
-      <tr>
-        <th>نام</th>
-        <th>نماد</th>
-        <th>توضیحات</th>
-        <th>موجودی</th>
-        <th>قیمت</th>
-        <th>واحد</th>
-        <th>عملیات</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><input type="text" class="نام ماده"></td>
-        <td><input type="text" class="رنگ"></td>
-        <td><input type="text" class="واحد"></td>
-        <td><input type="number" class="نرخ" value="0"></td>
-        <td><input type="number" class="تاریخ نرخ گذاری" value="0"></td>
-        <td>
-          <select class="unit">
-            <option value="Unit1">متر</option>
-            <option value="Unit1">عدد</option>
-          </select>
-        </td>
-        <td><button onclick="deleteRow(this)">حذف ماده</button></td>
-      </tr>
-    </tbody>
-  </table>
-  <button onclick="addRow()">افزودن ماده اولیه جدید</button>
-  <button onclick="saveData()">ذخیره</button>
+  <button type="button" onclick="selectMaterial()">افزودن ماده اولیه و شروع تحلیل</button>
+  <div id="table-container">
+  </div>
   {% block scripts %}
   <script src="{% static 'js/analys/new.js' %}"></script>
 {% endblock scripts %}
