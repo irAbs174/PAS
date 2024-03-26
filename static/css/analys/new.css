@@ -12,7 +12,7 @@ body {
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.1);
   }
   #total-tha{
-    background-color: #f064f2;
+    background-color: #92d759;
     padding: 8px;
     text-align: center;
     border-top: 1px solid #5c5c5c;
@@ -22,6 +22,16 @@ body {
     padding: 8px;
     text-align: center;
     border-top: 1px solid #5c5c5c;
+  }
+  #btnSave{
+    background-color: #aff07a;
+    width: 100%;
+    height: 100%;
+  }
+  #btnSave:hover{
+    background-color: #79b648;
+    width: 100%;
+    height: 100%;
   }
   td {
     padding: 8px;

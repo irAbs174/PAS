@@ -18,6 +18,8 @@ function createTable() {
     <thead>
       <tr>
         <th id="total-tha">جمع کل</th>
+        <th id="total-tha"><button id="btnSave" onClick="saveData()">ذخیره تحلیل</button></th>
+        <th id="total-tha"><button id="btnSave">خروجی اکسل</button></th>
       </tr>
       <tr>
       <th id="total-th">0</th>
